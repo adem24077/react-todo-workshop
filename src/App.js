@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setTodos([...todos, inputValue]);
+    setInputValue("");
+  };
+
+  const handleDelete = (index) => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="center">
+        <h1>Yapılacaklar Listesi</h1>
+        <input
+          type="text"
+          placeholder="Yapılacak bir şey girin."
+          value={inputValue}
+          onChange={handleChange}
+        />
+        <button onClick={handleSubmit}>Ekle</button>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo}>
+              {todo}
+              <button onClick={(index) => handleDelete(index)}>X</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
